@@ -1,0 +1,6 @@
+[
+  {"id": 2, "expected_status": 200, "label": "valid_id"},
+  {"id": 9999, "expected_status": 404, "label": "invalid_id"},
+  {"id": 0, "expected_status": 404, "label": "zero_id"},
+  {"id": -1, "expected_status": 404, "label": "negative_id"}
+]
