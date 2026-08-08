@@ -112,3 +112,5 @@ If Allure is not installed, install it first via the official package manager an
 ## Notes
 
 This suite intentionally avoids `sleep()` and hardcoded waits because API requests are synchronous at the HTTP layer and should rely on real response handling rather than timing-based retries.
+
+<!-- CI/CD auto-trigger test -->
