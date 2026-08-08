@@ -10,7 +10,7 @@ pipeline {
 
         stage('Install') {
             steps {
-                bat 'python -m venv venv'
+                bat '"C:\\Users\\ACER\\AppData\\Local\\Python\\bin\\python.exe" -m venv venv'
                 bat 'venv\\Scripts\\pip install -r requirements.txt'
                 bat 'venv\\Scripts\\playwright install'
             }
