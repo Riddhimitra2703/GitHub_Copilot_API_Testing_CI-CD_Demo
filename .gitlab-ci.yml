@@ -1,0 +1,61 @@
+stages:
+  - install
+  - test
+  - report
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+install:
+  stage: install
+  image: python:3.12
+  script:
+    - pip install -r requirements.txt
+    - playwright install --with-deps
+  artifacts:
+    paths:
+      - .cache/pip
+    expire_in: 1 day
+
+test:
+  stage: test
+  image: python:3.12
+  # NOTE: This project is a pure API test suite (Playwright APIRequestContext,
+  # no browser pages). The matrix below fulfils the assignment's requirement to
+  # demonstrate GitLab's `parallel: matrix` mechanism running the same test
+  # stage twice under different BROWSER values. It does not change actual test
+  # behaviour, since no test in this suite launches a browser — included to show
+  # the technique, not to claim real cross-browser coverage.
+  parallel:
+    matrix:
+      - BROWSER: ["chromium", "firefox"]
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - echo "Running suite under BROWSER=$BROWSER (API suite — value unused by tests, demonstrates matrix mechanism only)"
+    - pytest tests --alluredir=reports/allure-report --html=reports/html-report/report.html --self-contained-html
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - reports/allure-report/
+      - reports/html-report/
+
+report:
+  stage: report
+  image: python:3.12
+  script:
+    - echo "Test reports published as pipeline artifacts (see Job artifacts panel)."
+    - echo "HTML report: reports/html-report/report.html"
+    - echo "Allure raw results: reports/allure-report/"
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - reports/
+  dependencies:
+    - test
