@@ -34,7 +34,12 @@ pipeline {
                     alwaysLinkToLastBuild: true,
                     allowMissing: true
                 ])
-                allure includeProperties: false, jdk: '', results: [[path: 'reports/allure-report']]
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    commandline: 'Allure_CLI',
+                    results: [[path: 'reports/allure-report']]
+                ])
             }
         }
     }
@@ -42,6 +47,26 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
+
+            emailext(
+                to: 'riddhimitra2003@gmail.com',
+                subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <h2>Build Summary</h2>
+                    <p><b>Job:</b> ${env.JOB_NAME}</p>
+                    <p><b>Build Number:</b> ${env.BUILD_NUMBER}</p>
+                    <p><b>Status:</b> ${currentBuild.currentResult}</p>
+                    <p><b>Duration:</b> ${currentBuild.durationString}</p>
+                    <p><b>Git Branch:</b> ${env.GIT_BRANCH}</p>
+                    <p><b>Git Commit:</b> ${env.GIT_COMMIT}</p>
+                    <p><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                    <p><b>Node:</b> ${env.NODE_NAME}</p>
+                    <p>The full HTML report is attached below. The Allure report (with trend history and categorized results) and all raw artifacts are viewable directly in Jenkins via the Build URL above.</p>
+                """,
+                mimeType: 'text/html',
+                attachmentsPattern: 'reports/html-report/report.html',
+                attachLog: true
+            )
         }
     }
 }
