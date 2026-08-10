@@ -61,11 +61,13 @@ pipeline {
                     <p><b>Git Commit:</b> ${env.GIT_COMMIT}</p>
                     <p><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                     <p><b>Node:</b> ${env.NODE_NAME}</p>
-                    <p>The full HTML report is attached below. The Allure report (with trend history and categorized results) and all raw artifacts are viewable directly in Jenkins via the Build URL above.</p>
+                    <h3>Reports</h3>
+                    <p><a href="${env.BUILD_URL}Pytest_20HTML_20Report/">View Pytest HTML Report</a></p>
+                    <p><a href="${env.BUILD_URL}allure/">View Allure Report</a></p>
+                    <p><a href="${env.BUILD_URL}artifact/">Browse all raw artifacts</a></p>
+                    <p><a href="${env.BUILD_URL}console">View full console log</a></p>
                 """,
-                mimeType: 'text/html',
-                attachmentsPattern: 'reports/html-report/report.html',
-                attachLog: true
+                mimeType: 'text/html'
             )
         }
     }
