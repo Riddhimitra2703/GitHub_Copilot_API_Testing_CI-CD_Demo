@@ -34,6 +34,7 @@ pipeline {
                     alwaysLinkToLastBuild: true,
                     allowMissing: true
                 ])
+                allure includeProperties: false, jdk: '', results: [[path: 'reports/allure-report']]
             }
         }
     }
