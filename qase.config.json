@@ -1,0 +1,20 @@
+{
+  "mode": "testops",
+  "fallback": "report",
+  "testops": {
+    "project": "GCAT",
+    "api": {
+      "token": "${QASE_TESTOPS_API_TOKEN}",
+      "host": "qase.io"
+    },
+    "run": {
+      "title": "GitHub Copilot API Testing Automated Run"
+    }
+  },
+  "framework": {
+    "pytest": {
+      "captureLogs": true
+    }
+  },
+  "environment": "local"
+}
