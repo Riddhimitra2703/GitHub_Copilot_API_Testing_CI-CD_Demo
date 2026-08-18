@@ -18,8 +18,10 @@ pipeline {
 
         stage('Test') {
             steps {
-                retry(2) {
-                    bat 'venv\\Scripts\\pytest tests --alluredir=reports/allure-report --html=reports/html-report/report.html --self-contained-html'
+                withCredentials([string(credentialsId: 'qase-testops-token', variable: 'QASE_TESTOPS_API_TOKEN')]) {
+                    retry(2) {
+                        bat 'venv\\Scripts\\pytest tests --qase-mode=testops --alluredir=reports/allure-report --html=reports/html-report/report.html --self-contained-html'
+                    }
                 }
             }
         }
